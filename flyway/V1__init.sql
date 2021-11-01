@@ -3,7 +3,7 @@ CREATE TABLE `products`
 (
     `id`         int                             NOT NULL AUTO_INCREMENT,
     `title`      varchar(45) COLLATE utf8mb4_bin NOT NULL,
-    `cost`       int                             NOT NULL,
+    `price`      DECIMAL(7, 2)                   NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -11,45 +11,45 @@ CREATE TABLE `products`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_bin;
 
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('МОЛОКО', 60);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('ХЛЕБ', 40);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('ПЕЧЕНЬЕ', 80);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('ВОДА', 40);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('КОНФЕТЫ', 100);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('СЫР', 100);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('КОЛБАСА', 200);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('ЙОГУРТ', 50);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('СОК', 100);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('МОРКОВЬ', 40);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('КАРТОФЕЛЬ', 50);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('САЛФЕТКИ', 20);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('РИС', 90);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('МУКА', 60);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('САХАР', 40);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('СОЛЬ', 10);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('МАСЛО', 120);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('ПРИПРАВА', 40);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('НАПИТОК', 70);
-INSERT INTO `products` (`title`, `cost`)
+INSERT INTO `products` (`title`, `price`)
 VALUES ('СПИЧКИ', 10);
 
 
@@ -57,9 +57,9 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`
 (
     `id`         INT          NOT NULL AUTO_INCREMENT,
-    `first_name` varchar(80)  NOT NULL,
-    `last_name`  varchar(80)  NOT NULL,
-    `username`   VARCHAR(255) NOT NULL,
+    `first_name` varchar(80),
+    `last_name`  varchar(80),
+    `username`   VARCHAR(255) NOT NULL UNIQUE,
     `password`   VARCHAR(255) NOT NULL,
     `email`      VARCHAR(255) NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -146,18 +146,18 @@ CREATE TABLE `roles_permissions`
 DROP TABLE IF EXISTS `orders` CASCADE;
 CREATE TABLE `orders`
 (
-    `id`         INT          NOT NULL AUTO_INCREMENT,
-    `user_id`    INT          NULL,
-    `phone`      VARCHAR(12)  NOT NULL,
-    `address`    VARCHAR(255) NOT NULL,
-    `price`      INT          NOT NULL,
+    `id`         INT           NOT NULL AUTO_INCREMENT,
+    `username`   VARCHAR(255)  NOT NULL,
+    `phone`      VARCHAR(12)   NOT NULL,
+    `address`    VARCHAR(255)  NOT NULL,
+    `price`      DECIMAL(7, 2) NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
-    INDEX `#user_id_from_orders_idx` (`user_id` ASC) VISIBLE,
-    CONSTRAINT `#user_id_from_orders`
-        FOREIGN KEY (`user_id`)
-            REFERENCES `users` (`id`)
+    INDEX `#username_from_orders_idx` (`username` ASC) VISIBLE,
+    CONSTRAINT `#username_from_orders`
+        FOREIGN KEY (`username`)
+            REFERENCES `users` (`username`)
             ON DELETE CASCADE
             ON UPDATE CASCADE
 )
@@ -168,12 +168,12 @@ CREATE TABLE `orders`
 DROP TABLE IF EXISTS `order_items`;
 CREATE TABLE `order_items`
 (
-    `id`                INT NOT NULL AUTO_INCREMENT,
-    `order_id`          INT NULL,
-    `product_id`        INT NULL,
-    `quantity`          INT NOT NULL,
-    `price`             INT NOT NULL,
-    `price_per_product` INT NOT NULL,
+    `id`                INT           NOT NULL AUTO_INCREMENT,
+    `order_id`          INT           NULL,
+    `product_id`        INT           NULL,
+    `quantity`          INT           NOT NULL,
+    `price`             DECIMAL(7, 2) NOT NULL,
+    `price_per_product` DECIMAL(7, 2) NOT NULL,
     `created_at`        DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at`        DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -197,12 +197,12 @@ CREATE TABLE `order_items`
 DROP TABLE IF EXISTS `comments`;
 CREATE TABLE `comments`
 (
-    `id`                INT NOT NULL AUTO_INCREMENT,
-    `text`              VARCHAR(255) NOT NULL ,
-    `product_id`        INT NOT NULL,
-    `user_id`           INT NOT NULL,
-    `created_at`        DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `updated_at`        DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `id`         INT          NOT NULL AUTO_INCREMENT,
+    `text`       VARCHAR(255) NOT NULL,
+    `product_id` INT          NOT NULL,
+    `user_id`    INT          NOT NULL,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     INDEX `#product_id_from_comment_idx` (`product_id` ASC) VISIBLE,
     CONSTRAINT `#product_id_from_comment`

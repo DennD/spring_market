@@ -14,9 +14,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
     open-in-view: false
-jwt:
-  secret: wertyuioplkjhgfdxvbnm98765764edfgbnmk9876
-  lifetime: 36000000
 integration:
   cart-service:
     url: http://localhost:8190/market-cart

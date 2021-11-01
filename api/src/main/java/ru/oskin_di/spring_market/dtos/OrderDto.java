@@ -1,5 +1,6 @@
 package ru.oskin_di.spring_market.dtos;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,9 +10,9 @@ public class OrderDto {
     private List<OrderItemDto> items;
     private String address;
     private String phone;
-    private int price;
+    private BigDecimal price;
 
-    public OrderDto(int id, List<OrderItemDto> items, String address, String phone, int price) {
+    public OrderDto(int id, List<OrderItemDto> items, String address, String phone, BigDecimal price) {
         this.id = id;
         this.items = items;
         this.address = address;
@@ -54,11 +55,11 @@ public class OrderDto {
         this.phone = phone;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }

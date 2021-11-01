@@ -13,7 +13,6 @@ import ru.oskin_di.spring_market.utils.Cart;
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class CartController {
     private final CartService cartService;
     private final CoreServiceIntegration coreServiceIntegration;
@@ -21,7 +20,6 @@ public class CartController {
     @GetMapping("/{uuid}")
     public CartDto getCart(@RequestHeader(required = false) String username, @PathVariable String uuid) {
         Cart cart = cartService.getCurrentCart(getCurrentCartUuid(username,uuid));
-        System.out.println(username);
         return new CartDto(cart.getItems(),cart.getTotalPrice());
     }
 

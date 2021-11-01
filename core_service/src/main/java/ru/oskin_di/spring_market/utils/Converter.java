@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Component
 public class Converter {
     public ProductDto productToDto(Product product) {
-        return new ProductDto(product.getId(), product.getTitle(), product.getCost());
+        return new ProductDto(product.getId(), product.getTitle(), product.getPrice());
     }
 
     public OrderItemDto orderItemToDto(OrderItem orderItem) {

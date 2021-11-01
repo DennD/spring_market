@@ -1,0 +1,44 @@
+<div class="container">
+    <h1>Список продуктов</h1>
+    <form novalidate ng-submit="loadProducts()">
+        <div class="input-group mb-3">
+            <span class="input-group-text">Минимальная цена</span>
+            <input type="number" class="form-control" id="filterMinPrice" placeholder="" ng-model="filter.min_price">
+            <span class="input-group-text">Максимальная цена</span>
+            <input type="number" class="form-control" id="filterMaxPrice" placeholder="" ng-model="filter.max_price">
+            <span class="input-group-text">Название</span>
+            <input type="text" class="form-control" id="filterTitle" placeholder="" ng-model="filter.title">
+            <button class="btn btn-outline-warning btn-sm" type="submit">Фильтр</button>
+        </div>
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>НАЗВАНИЕ</td>
+            <td>СТОИМОСТЬ</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="p in productsPage.content">
+            <td>{{p.id}}</td>
+            <td>{{p.title}}</td>
+            <td>{{p.price}}</td>
+            <td>
+                <button class="btn btn-info" ng-click="showInfoProduct(p.id)">Инфо</button>
+                <button class="btn btn-warning" ng-click="navToUpdateProductPage(p.id)">Изменить</button>
+                <button class="btn btn-primary" ng-click="addInCart(p.id)">Добавить в корзину</button>
+                <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item" ng-repeat="pageIndex in paginationArray">
+                <button class="page-link" ng-click="loadProducts(pageIndex)">{{pageIndex}}</button>
+            </li>
+        </ul>
+    </nav>
+</div>

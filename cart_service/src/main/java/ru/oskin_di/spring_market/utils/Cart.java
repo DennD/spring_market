@@ -4,6 +4,7 @@ import lombok.Data;
 import ru.oskin_di.spring_market.dtos.OrderItemDto;
 import ru.oskin_di.spring_market.dtos.ProductDto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 @Data
 public class Cart {
     private List<OrderItemDto> items;
-    private int totalPrice;
+    private BigDecimal totalPrice;
 
     public Cart() {
         this.items = new ArrayList<>();
@@ -25,7 +26,7 @@ public class Cart {
                 return;
             }
         }
-        items.add(new OrderItemDto(productDto.getId(),productDto.getTitle(),1,productDto.getCost(),productDto.getCost()));
+        items.add(new OrderItemDto(productDto.getId(), productDto.getTitle(), 1, productDto.getPrice(), productDto.getPrice()));
         recalculate();
     }
 
@@ -52,13 +53,13 @@ public class Cart {
 
     public void clear() {
         items.clear();
-        totalPrice = 0;
+        totalPrice = BigDecimal.ZERO;
     }
 
     private void recalculate() {
-        totalPrice = 0;
+        totalPrice = BigDecimal.ZERO;
         for (OrderItemDto i : items) {
-            totalPrice += i.getPrice();
+            totalPrice = totalPrice.add(i.getPrice());
         }
     }
 

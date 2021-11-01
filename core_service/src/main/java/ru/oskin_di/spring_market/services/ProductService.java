@@ -6,6 +6,7 @@ import org.springframework.util.MultiValueMap;
 import ru.oskin_di.spring_market.dtos.CommentDto;
 import ru.oskin_di.spring_market.models.Product;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,21 +15,19 @@ public interface ProductService {
 
     List<Product> findAll();
 
-    List<CommentDto> getComments(int id);
-
     Optional<Product> findById(int id);
 
-    void save(String title, int cost);
+    void save(String title, BigDecimal price);
 
     void deleteById(int id);
 
-    List<Product> findProductsLessCost(int maxCost);
+//    List<Product> findProductsLessPrice(BigDecimal maxPrice);
+//
+//    List<Product> findProductsMorePrice(BigDecimal minPrice);
+//
+//    List<Product> findProductsLessPriceAndMorePrice(BigDecimal minPrice, BigDecimal maxPrice);
 
-    List<Product> findProductsMoreCost(int minCost);
-
-    List<Product> findProductsLessCostAndMoreCost(int minCost, int maxCost);
-
-    void updateProduct(String title, int cost, int id);
+    void updateProduct(String title, BigDecimal price, int id);
 
     Page<Product> findAll(int pageIndex, int pageSize, MultiValueMap<String, String> rqParams);
 

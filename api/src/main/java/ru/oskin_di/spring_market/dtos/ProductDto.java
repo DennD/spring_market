@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 public class ProductDto {
 
@@ -13,12 +14,12 @@ public class ProductDto {
     private String title;
 
     @Min(value = 1, message = "Цена должна быть больше 1")
-    private int cost;
+    private BigDecimal price;
 
-    public ProductDto(int id, String title, int price) {
+    public ProductDto(int id, String title, BigDecimal price) {
         this.id = id;
         this.title = title;
-        this.cost = price;
+        this.price = price;
     }
 
     public ProductDto() {
@@ -40,11 +41,11 @@ public class ProductDto {
         this.title = title;
     }
 
-    public int getCost() {
-        return cost;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
+    public void setCost(BigDecimal cost) {
+        this.price = price;
     }
 }

@@ -47,11 +47,6 @@ public class ProductController {
         return converter.productToDto(product);
     }
 
-    @GetMapping("/comments/{id}")
-    public List<CommentDto> showComments(@PathVariable int id) {
-        return productService.getComments(id);
-    }
-
 
     @DeleteMapping("/delete")
     public ResponseEntity<Integer> deleteProduct(@RequestParam int id) {
@@ -65,17 +60,16 @@ public class ProductController {
             throw new DataValidationExceptions(bindingResult.getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.toList()));
         }
 
-        productService.save(productDto.getTitle(), productDto.getCost());
+        productService.save(productDto.getTitle(), productDto.getPrice());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping
     public void updateProduct(@RequestBody @Validated ProductDto productDto, BindingResult bindingResult) {
-        System.out.println(bindingResult);
         if (bindingResult.hasErrors()) {
             throw new DataValidationExceptions(bindingResult.getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.toList()));
         }
-        productService.updateProduct(productDto.getTitle(), productDto.getCost(), productDto.getId());
+        productService.updateProduct(productDto.getTitle(), productDto.getPrice(), productDto.getId());
     }
 
 

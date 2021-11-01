@@ -1,6 +1,7 @@
 package ru.oskin_di.spring_market.services.impl;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,17 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import ru.oskin_di.spring_market.dtos.CommentDto;
 import ru.oskin_di.spring_market.exceptions.ResourceNotFoundException;
-import ru.oskin_di.spring_market.models.Comment;
 import ru.oskin_di.spring_market.models.Product;
 import ru.oskin_di.spring_market.repositories.ProductRepository;
 import ru.oskin_di.spring_market.repositories.specifications.ProductSpecifications;
 import ru.oskin_di.spring_market.services.ProductService;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private static final String FILTER_MIN_PRICE = "min_price";
     private static final String FILTER_MAX_PRICE = "max_price";
@@ -44,19 +46,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<CommentDto> getComments(int id) {
-        List<CommentDto> commentDtoList = new ArrayList<>();
-        List<Comment> comments = productRepository.findById(id).get().getComments();
-        for (Comment comment : comments) {
-            CommentDto commentDto = new CommentDto(comment.getText(), comment.getUser().getUsername());
-            commentDtoList.add(commentDto);
-        }
-        return commentDtoList;
-    }
-
-    @Override
-    public void save(String title, int cost) {
-        productRepository.saveAndFlush(new Product(title, cost));
+    public void save(String title, BigDecimal price) {
+        productRepository.saveAndFlush(new Product(title, price));
     }
 
     @Override
@@ -64,26 +55,26 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
-    @Override
-    public List<Product> findProductsLessCost(int maxCost) {
-        return productRepository.findProductsByCostIsAfter(maxCost);
-    }
-
-    @Override
-    public List<Product> findProductsMoreCost(int minCost) {
-        return productRepository.findProductsByCostIsBefore(minCost);
-    }
-
-    @Override
-    public List<Product> findProductsLessCostAndMoreCost(int minCost, int maxCost) {
-        return productRepository.findProductsByCostIsAfterAndCostIsBefore(minCost, maxCost);
-    }
+//    @Override
+//    public List<Product> findProductsLessPrice(BigDecimal maxPrice) {
+//        return productRepository.findProductsByPriceIsAfter(maxPrice);
+//    }
+//
+//    @Override
+//    public List<Product> findProductsMorePrice(BigDecimal minPrice) {
+//        return productRepository.findProductsByPriceIsBefore(minPrice);
+//    }
+//
+//    @Override
+//    public List<Product> findProductsLessPriceAndMorePrice(BigDecimal minPrice, BigDecimal maxPrice) {
+//        return productRepository.findProductsByPricetIsAfterAndPriceIsBefore(minPrice, maxPrice);
+//    }
 
     @Transactional
     @Override
-    public void updateProduct(String title, int cost, int id) {
+    public void updateProduct(String title, BigDecimal price, int id) {
         Product product = findById(id).orElseThrow(() -> new ResourceNotFoundException("Product id = " + id + " not found"));
-        product.setCost(cost);
+        product.setPrice(price);
         product.setTitle(title);
     }
 
@@ -106,11 +97,11 @@ public class ProductServiceImpl implements ProductService {
     private Specification<Product> constructSpecification(MultiValueMap<String, String> params) {
         Specification<Product> spec = Specification.where(null);
         if (params.containsKey(FILTER_MIN_PRICE) && !params.getFirst(FILTER_MIN_PRICE).isBlank()) {
-            int minPrice = Integer.parseInt(params.getFirst(FILTER_MIN_PRICE));
+            BigDecimal minPrice = new BigDecimal(params.getFirst(FILTER_MIN_PRICE));
             spec = spec.and(ProductSpecifications.priceGreaterOrEqualsThan(minPrice));
         }
         if (params.containsKey(FILTER_MAX_PRICE) && !params.getFirst(FILTER_MAX_PRICE).isBlank()) {
-            int maxPrice = Integer.parseInt(params.getFirst(FILTER_MAX_PRICE));
+            BigDecimal maxPrice = new BigDecimal(params.getFirst(FILTER_MAX_PRICE));
             spec = spec.and(ProductSpecifications.priceLesserOrEqualsThan(maxPrice));
         }
         if (params.containsKey(FILTER_TITLE) && !params.getFirst(FILTER_TITLE).isBlank()) {

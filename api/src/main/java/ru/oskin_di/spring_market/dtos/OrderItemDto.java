@@ -1,13 +1,15 @@
 package ru.oskin_di.spring_market.dtos;
 
+import java.math.BigDecimal;
+
 public class OrderItemDto {
     private int productId;
     private String productTitle;
     private int quantity;
-    private int pricePerProduct;
-    private int price;
+    private BigDecimal pricePerProduct;
+    private BigDecimal price;
 
-    public OrderItemDto(int product_id, String productTitle, int quantity, int pricePerProduct, int price) {
+    public OrderItemDto(int product_id, String productTitle, int quantity, BigDecimal pricePerProduct, BigDecimal price) {
         this.productId = product_id;
         this.productTitle = productTitle;
         this.quantity = quantity;
@@ -21,7 +23,7 @@ public class OrderItemDto {
         if (quantity < 0) {
             quantity = 0;
         }
-        price = pricePerProduct * quantity;
+        price = pricePerProduct.multiply(new BigDecimal(quantity));
     }
 
     public OrderItemDto() {
@@ -51,19 +53,19 @@ public class OrderItemDto {
         this.quantity = quantity;
     }
 
-    public int getPricePerProduct() {
+    public BigDecimal getPricePerProduct() {
         return pricePerProduct;
     }
 
-    public void setPricePerProduct(int pricePerProduct) {
+    public void setPricePerProduct(BigDecimal pricePerProduct) {
         this.pricePerProduct = pricePerProduct;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }

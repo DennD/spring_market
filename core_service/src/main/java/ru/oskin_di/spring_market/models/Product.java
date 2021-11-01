@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,11 +23,8 @@ public class Product {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "cost")
-    private int cost;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    @Column(name = "price")
+    private BigDecimal price;
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -36,8 +34,8 @@ public class Product {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public Product(String title, int cost) {
+    public Product(String title, BigDecimal price) {
         this.title = title;
-        this.cost = cost;
+        this.price = price;
     }
 }
