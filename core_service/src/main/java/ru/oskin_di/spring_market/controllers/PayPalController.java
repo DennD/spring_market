@@ -45,7 +45,7 @@ public class PayPalController {
         Order payPalOrder = response.result();
         if ("COMPLETED".equals(payPalOrder.status())) {
             int orderId = Integer.parseInt(payPalOrder.purchaseUnits().get(0).referenceId());
-            Optional<ru.oskin_di.spring_market.models.Order> orderOptional = orderService.findById(orderId);
+            orderService.proofOfPayment(orderId);
             return new ResponseEntity<>("Order completed!", HttpStatus.valueOf(response.statusCode()));
         }
         return new ResponseEntity<>(payPalOrder, HttpStatus.valueOf(response.statusCode()));

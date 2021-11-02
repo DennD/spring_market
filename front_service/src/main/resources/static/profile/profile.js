@@ -1,4 +1,4 @@
-angular.module('market-app').controller('profileController', function ($scope, $http) {
+angular.module('market-app').controller('profileController', function ($scope, $http, $location) {
 
     $scope.loadOrders = function () {
         $http({
@@ -6,6 +6,7 @@ angular.module('market-app').controller('profileController', function ($scope, $
             method: 'GET'
         }).then(function (response) {
             $scope.orders = response.data;
+            console.log($scope.orders);
         });
     };
 
@@ -17,6 +18,14 @@ angular.module('market-app').controller('profileController', function ($scope, $
             $scope.userProfile = response.data;
         });
     };
+
+    $scope.checkPaymentOut = function (orderId) {
+        $location.path('/order_pay/' + orderId)
+    }
+
+    $scope.disabledCheckPaymentOut = function () {
+        alert("Заказ уже оплачен");
+    }
 
     $scope.loadOrders();
     $scope.loadMyProfile();

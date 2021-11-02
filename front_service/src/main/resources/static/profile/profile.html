@@ -18,6 +18,7 @@
                 <th scope="col">ID заказа</th>
                 <th scope="col">Продукты</th>
                 <th scope="col">Стоимость</th>
+                <th scope="col">Оплата</th>
             </tr>
         </thread>
         <tbody>
@@ -44,6 +45,10 @@
                 </table>
             </td>
             <th scope="row">{{ord.price}}</th>
+            <th scope="row">
+                <button class="btn btn-primary" ng-click="checkPaymentOut(ord.id)" ng-show="!ord.payment">Оплатить</button>
+                <button class="btn btn-secondary" ng-click="disabledCheckPaymentOut()" ng-show="ord.payment">Оплатить</button>
+            </th>
         </tr>
         </tbody>
     </table>

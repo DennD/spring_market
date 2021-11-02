@@ -21,4 +21,6 @@ public interface OrderService {
 
     Optional<OrderDto> findDtoByIdAndUsername(int id, String username);
 
+    void proofOfPayment(int orderId);
+
 }

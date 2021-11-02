@@ -55,6 +55,13 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Transactional
+    @Override
+    public void proofOfPayment(int orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Не удалось найти заказ с ID: " + orderId));
+        order.setPayment(true);
+    }
+
     @Override
     public List<Order> findAllByUsername(String username) {
         return orderRepository.findAllByUsername(username);

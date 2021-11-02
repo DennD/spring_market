@@ -11,16 +11,26 @@ public class OrderDto {
     private String address;
     private String phone;
     private BigDecimal price;
+    private boolean payment;
 
-    public OrderDto(int id, List<OrderItemDto> items, String address, String phone, BigDecimal price) {
+    public OrderDto(int id, List<OrderItemDto> items, String address, String phone, BigDecimal price, boolean payment) {
         this.id = id;
         this.items = items;
         this.address = address;
         this.phone = phone;
         this.price = price;
+        this.payment = payment;
     }
 
     public OrderDto() {
+    }
+
+    public boolean isPayment() {
+        return payment;
+    }
+
+    public void setPayment(boolean payment) {
+        this.payment = payment;
     }
 
     public int getId() {

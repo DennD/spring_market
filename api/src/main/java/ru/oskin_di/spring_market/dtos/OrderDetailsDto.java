@@ -10,7 +10,7 @@ public class OrderDetailsDto {
     @Length(min = 10, max = 12, message = "Длина номера телефона должна составлять 10-12 символов")
     private String phone;
 
-    @NotNull(message = "Адресс не может быть пустым")
+    @NotNull(message = "Адрес не может быть пустым")
     @Length(min = 3, max = 255, message = "Длина адреса должна составлять 3-255 символов")
     private String address;
 

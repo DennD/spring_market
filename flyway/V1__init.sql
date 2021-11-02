@@ -151,6 +151,7 @@ CREATE TABLE `orders`
     `phone`      VARCHAR(12)   NOT NULL,
     `address`    VARCHAR(255)  NOT NULL,
     `price`      DECIMAL(7, 2) NOT NULL,
+    `payment`    BOOLEAN DEFAULT FALSE,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
