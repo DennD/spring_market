@@ -27,7 +27,7 @@ public class PayPalServiceImpl implements PayPalService {
         orderRequest.checkoutPaymentIntent("CAPTURE");
 
         ApplicationContext applicationContext = new ApplicationContext()
-                .brandName("spring_market")
+                .brandName("Default Application")
                 .landingPage("BILLING")
                 .shippingPreference("SET_PROVIDED_ADDRESS");
         orderRequest.applicationContext(applicationContext);
@@ -41,12 +41,12 @@ public class PayPalServiceImpl implements PayPalService {
                 .items(order.getItems().stream()
                         .map(orderItem -> new Item()
                                 .name(orderItem.getProduct().getTitle())
-                                .unitAmount(new Money().currencyCode("RUB").value(String.valueOf(orderItem.getPrice())))
+                                .unitAmount(new Money().currencyCode("RUB").value(String.valueOf(orderItem.getPricePerProduct())))
                                 .quantity(String.valueOf(orderItem.getQuantity())))
                         .collect(Collectors.toList()))
                 .shippingDetail(new ShippingDetail().name(new Name().fullName(order.getUsername()))
-                        .addressPortable(new AddressPortable().addressLine1("123 Townsend St").addressLine2("Floor 6")
-                                .adminArea2("San Francisco").adminArea1("CA").postalCode("94107").countryCode("US")));
+                        .addressPortable(new AddressPortable().addressLine1(order.getAddress()).addressLine2(order.getAddress())
+                                .adminArea2(order.getAddress()).adminArea1(order.getAddress()).postalCode("398046").countryCode("RU")));
         purchaseUnitRequests.add(purchaseUnitRequest);
         orderRequest.purchaseUnits(purchaseUnitRequests);
         return orderRequest;

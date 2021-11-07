@@ -29,6 +29,9 @@ public class PayPalController {
 
     @PostMapping("/create/{orderId}")
     public ResponseEntity<?> createOrder(@PathVariable int orderId) throws IOException {
+        if (orderService.findById(orderId).get().isPayment()) {
+            return new ResponseEntity<>("Заказ с ID: " + orderId + " уже оплачен", HttpStatus.valueOf(409));
+        }
         OrdersCreateRequest request = new OrdersCreateRequest();
         request.prefer("return=representation");
         request.requestBody(payPalService.createOrderRequest(orderId));
